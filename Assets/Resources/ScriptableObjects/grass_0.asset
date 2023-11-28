@@ -10,8 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0729b3669e456f647a820a34c19bfc19, type: 3}
-  m_Name: Green
+  m_Name: grass_0
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1673122051197278210, guid: 39e2531f005f8f042b74bba3b2cf7c5d, type: 3}
+  prefab: {fileID: 1958881574236988543, guid: 4b93c7cb70383cf4397b98b36d591635, type: 3}
   gameObject: {fileID: 0}
-  nodeSides: []
+  sides:
+  - direction: 0
+    scripts: []
+  - direction: 1
+    scripts: []
+  - direction: 2
+    scripts: []
+  - direction: 3
+    scripts: []
