@@ -40,7 +40,7 @@ public class Grid {
         tile.script = tileSO;
         if (!tile.TryPlace()) return false;
         tile.script.gameObject = Object.Instantiate(tileSO.prefab);
-        tile.script.gameObject.transform.position = new Vector3(tile.x - size / 2 , 0f, tile.z - size / 2);
+        tile.script.gameObject.transform.position = new Vector3(tile.x * gridSO.gap - size / 2 * gridSO.gap, 0f, tile.z * gridSO.gap - size / 2 * gridSO.gap);
         tile.script.gameObject.transform.Rotate(0f, tile.script.rotationY, 0f);
         return true;
     }
@@ -48,7 +48,7 @@ public class Grid {
     public void PlaceTile(Tile tile, TileSO tileSO) {
         tile.script = tileSO;
         tile.script.gameObject = Object.Instantiate(tileSO.prefab);
-        tile.script.gameObject.transform.position = new Vector3(tile.x - size / 2, 0f, tile.z - size / 2);
+        tile.script.gameObject.transform.position = new Vector3(tile.x * gridSO.gap - size / 2 * gridSO.gap, 0f, tile.z * gridSO.gap - size / 2 * gridSO.gap);
         tile.script.gameObject.transform.Rotate(0f, tile.script.rotationY, 0f);
     }
 }

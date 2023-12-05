@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Grid")]
 public class GridSO : ScriptableObject {
     public int size = 1;
+    public int gap = 1;
     public string title = "";
     public TileSO beginningTileSO;
 
