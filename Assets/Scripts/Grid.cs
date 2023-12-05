@@ -3,49 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Grid {
-    public int width, depth;
+    private readonly int size;
+    private readonly GridSO gridSO;
+    public Tile[] tiles;
 
-    public Tile[,] tiles;
-
-    public Grid(int width, int depth, TileScriptableObject scriptableObject) {
-        this.width = width;
-        this.depth = depth;
+    public Grid(GridSO gridSO) {
+        size = gridSO.size % 2 == 0 ? gridSO.size + 1 : gridSO.size;
+        this.gridSO = gridSO;
         CreateTiles();
         AddNeighbors();
+        TileSO.LoadRepository(gridSO.title);
     }
 
     private void CreateTiles() {
-        tiles = new Tile[width, depth];
-        for (int x = 0; x < width; x++) {
-            for (int z = 0; z < depth; z++) {
-                tiles[x, z] = new Tile() { x = x, z = z };
+        tiles = new Tile[size * size];
+        for (int x = 0; x < size; x++) {
+            for (int z = 0; z < size; z++) {
+                tiles[gridSO.GetIndexByXZ(x, z)] = new Tile() { x = x, z = z };
             }
         }        
     }
 
     private void AddNeighbors() {
-        for (int x = 0; x < width; x++) {
-            for (int z = 0; z < depth; z++) {
-                Tile tile = tiles[x, z];
-                if (0 <= x - 1) { tile.neighbors.Add(tiles[x - 1, z]); }
-                if (x + 1 < width) { tile.neighbors.Add(tiles[x + 1, z]); }
-                if (0 <= z - 1) { tile.neighbors.Add(tiles[x, z - 1]); }
-                if (z + 1 < depth) { tile.neighbors.Add(tiles[x, z + 1]); }
+        for (int x = 0; x < size; x++) {
+            for (int z = 0; z < size; z++) {
+                Tile tile = tiles[gridSO.GetIndexByXZ(x, z)];
+                if (z + 1 < size) { tile.neighbors[TileSO.Direction.Z_POSITIVE] = tiles[gridSO.GetIndexByXZ(x, z + 1)]; }
+                if (x + 1 < size) { tile.neighbors[TileSO.Direction.X_POSITIVE] = tiles[gridSO.GetIndexByXZ(x + 1, z)]; }
+                if (0 <= z - 1) { tile.neighbors[TileSO.Direction.Z_NEGATIVE] = tiles[gridSO.GetIndexByXZ(x, z - 1)]; }
+                if (0 <= x - 1) { tile.neighbors[TileSO.Direction.X_NEGATIVE] = tiles[gridSO.GetIndexByXZ(x - 1, z)]; }
             }
         }
     }   
 
-    public bool TryPlaceTile(Tile tile, TileScriptableObject scriptableObject) {
-        tile.script = scriptableObject;
+    public bool TryPlaceTile(Tile tile, TileSO tileSO) {
+        tile.script = tileSO;
         if (!tile.TryPlace()) return false;
-        tile.script.gameObject = Object.Instantiate(scriptableObject.prefab);
-        tile.script.gameObject.transform.position = new Vector3(tile.x, 0f, tile.z);
+        tile.script.gameObject = Object.Instantiate(tileSO.prefab);
+        tile.script.gameObject.transform.position = new Vector3(tile.x - size / 2 , 0f, tile.z - size / 2);
+        tile.script.gameObject.transform.Rotate(0f, tile.script.rotationY, 0f);
         return true;
     }
 
-    public void PlaceTile(Tile tile, TileScriptableObject scriptableObject) {
-        tile.script = scriptableObject;
-        tile.script.gameObject = Object.Instantiate(scriptableObject.prefab);
-        tile.script.gameObject.transform.position = new Vector3(tile.x, 0f, tile.z);
+    public void PlaceTile(Tile tile, TileSO tileSO) {
+        tile.script = tileSO;
+        tile.script.gameObject = Object.Instantiate(tileSO.prefab);
+        tile.script.gameObject.transform.position = new Vector3(tile.x - size / 2, 0f, tile.z - size / 2);
+        tile.script.gameObject.transform.Rotate(0f, tile.script.rotationY, 0f);
     }
 }

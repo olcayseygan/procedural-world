@@ -2,61 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class MapGenerator : MonoBehaviour {
-    [SerializeField] private TileScriptableObject scriptableObject;
-    [SerializeField] private TileScriptableObject placeholderScriptableObject;
-    [SerializeField] private Vector2Int size;
+    [SerializeField] private GridSO gridSO;
     private Grid grid;
-    Stack<Tile> stack = new();
+
     private void Start() {
-        grid = new(size.x, size.y, scriptableObject);
-        PlaceFirstTile(scriptableObject);
-        StartCoroutine(GenerateEnumerator());
+        grid = new(gridSO);
+        PlaceFirstTile(gridSO.beginningTileSO);
     }
 
-    private IEnumerator GenerateEnumerator() {
-        while (0 < stack.Count) {
-            yield return new WaitForSeconds(0.1f);
-            PlaceNextStep();
-        }
+    private void Update() {
+        PlaceNextStepByMinimum();
     }
 
-    public void PlaceFirstTile(TileScriptableObject scriptableObject) {
-        if (!grid.TryPlaceTile(grid.tiles[0, 0], scriptableObject)) return;
-        stack.Push(grid.tiles[0, 0]);
+    public void PlaceFirstTile(TileSO tileSO) {
+        grid.TryPlaceTile(grid.tiles[grid.tiles.Length / 2], tileSO);
     }
 
-    public void PlaceNextStep() {
-        Debug.Log(stack.Count);
-        if (stack.Count == 0) return;
-        var tile = stack.Peek();
-        var randomNeighbor = tile.GetRandomNeighbor();
-        if (randomNeighbor == null) {
-            stack.Pop();
-            return;
-        }
-
-        if (!grid.TryPlaceTile(randomNeighbor, randomNeighbor.GetRandomValidScript())) {
-            grid.PlaceTile(randomNeighbor, placeholderScriptableObject);
-            stack.Pop();
-            return;
-        }
-        stack.Push(randomNeighbor);
-    }
-
-    private void OnDrawGizmos() {
-        if (!Application.isPlaying) return;
-        if (grid == null) return;
-        if (stack.Count == 0) return;
-        foreach (var tile in grid.tiles) {
-            if (tile == null) continue;
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(new Vector3(tile.x, 0f, tile.z), 0.1f);
-        }
-
-        Gizmos.color = Color.green;
-        Tile tile_ = stack.Peek();
-        Gizmos.DrawSphere(new Vector3(tile_.x, 0.5f, tile_.z), 0.2f);
+    public void PlaceNextStepByMinimum() {
+        var gridOrdered = grid.tiles.Where(tile => tile.script == null && tile.validScripts.Count != 0).OrderBy(tile => tile.validScripts.Count).ToList();
+        if (gridOrdered.Count == 0) return;
+        int stopIndex = gridOrdered.FindIndex(tile => gridOrdered[0].validScripts.Count < tile.validScripts.Count);
+        if (stopIndex == -1) stopIndex = 0;
+        gridOrdered = gridOrdered.Take(stopIndex + 1).ToList();
+        if (gridOrdered.Count == 0) return;
+        var randomTile = gridOrdered[Random.Range(0, gridOrdered.Count)];
+        if (!grid.TryPlaceTile(randomTile, randomTile.GetRandomValidScript())) return;
     }
 }

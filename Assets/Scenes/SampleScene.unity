@@ -154,7 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptableObject: {fileID: 11400000, guid: 384f818e58712b34d941f1d78730d5fd, type: 2}
   placeholderScriptableObject: {fileID: 11400000, guid: 384f818e58712b34d941f1d78730d5fd, type: 2}
-  size: {x: 11, y: 11}
+  size: {x: 21, y: 21}
+  gridSO: {fileID: 11400000, guid: a26154a3726be4145b380be068af12c4, type: 2}
 --- !u!4 &682912202
 Transform:
   m_ObjectHideFlags: 0
