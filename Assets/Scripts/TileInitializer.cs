@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -80,6 +79,7 @@ public class TileInitializer : MonoBehaviour {
             Vector3 position = outPositions[Random.Range(0, outPositions.Count)] / terrainData.size.x;
             TreeInstance treeInstance = new() {
                 position = position,
+                rotation = Random.Range(0f, 2f * Mathf.PI),
                 heightScale = 1,
                 widthScale = 1,
                 color = Color.white,

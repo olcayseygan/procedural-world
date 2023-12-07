@@ -36,12 +36,13 @@ public class Grid {
         }
     }   
 
-    public bool TryPlaceTile(Tile tile, TileSO tileSO) {
+    public bool TryPlaceTile(Tile tile, TileSO tileSO, Transform worldGeneratorTransform) {
         tile.script = tileSO;
         if (!tile.TryPlace()) return false;
         tile.script.gameObject = Object.Instantiate(tileSO.prefab);
-        tile.script.gameObject.transform.position = new Vector3(tile.x * gridSO.gap - size / 2 * gridSO.gap, 0f, tile.z * gridSO.gap - size / 2 * gridSO.gap);
         tile.script.gameObject.transform.Rotate(0f, tile.script.rotationY, 0f);
+        tile.script.gameObject.transform.SetParent(worldGeneratorTransform);
+        tile.script.gameObject.transform.localPosition = new Vector3(tile.x * gridSO.gap - size / 2 * gridSO.gap, 0f, tile.z * gridSO.gap - size / 2 * gridSO.gap);
         return true;
     }
 

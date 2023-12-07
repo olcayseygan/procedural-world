@@ -9,18 +9,28 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField] private GridSO gridSO;
     private Grid grid;
     [SerializeField, Range(1, 10)] private int generationSpeed = 1;
+    [SerializeField] private float animationSpeed = 0.5f;
 
     private void Start() {
+        transform.position = new Vector3(-gridSO.size / 2f, 0f, -gridSO.size / 2f);
         grid = new(gridSO);
-        PlaceFirstTile(gridSO.beginningTileSO);
+        StartCoroutine(GenerateWorld());
     }
 
-    private void Update() {
-        for (int i = 0; i < generationSpeed && PlaceNextStepByMinimum(); i++) ;
+    private IEnumerator GenerateWorld() {
+        PlaceFirstTile(gridSO.beginningTileSO);
+        yield return new WaitForSeconds(animationSpeed);
+        bool isDone = false;
+        while (!isDone) {
+            for (int i = 0; i < generationSpeed && !isDone; i++, isDone = !PlaceNextStepByMinimum()) ;
+            yield return new WaitForSeconds(animationSpeed);
+        }
+
+
     }
 
     public void PlaceFirstTile(TileSO tileSO) {
-        grid.TryPlaceTile(grid.tiles[grid.tiles.Length / 2], tileSO);
+        grid.TryPlaceTile(grid.tiles[grid.tiles.Length / 2], tileSO, transform);
     }
 
     public bool PlaceNextStepByMinimum() {
@@ -32,7 +42,7 @@ public class MapGenerator : MonoBehaviour {
         if (gridOrdered.Count == 0) return false;
         var randomTile = gridOrdered[Random.Range(0, gridOrdered.Count)];
         var randomValidScript = randomTile.GetRandomValidScript();
-        if (!grid.TryPlaceTile(randomTile, randomValidScript)) return false;
+        if (!grid.TryPlaceTile(randomTile, randomValidScript, transform)) return false;
         TileInitializer objectSpawner = randomValidScript.gameObject.GetComponent<TileInitializer>();
         if (objectSpawner != null) {
             objectSpawner.GetTerrainProperties();
@@ -40,6 +50,7 @@ public class MapGenerator : MonoBehaviour {
             objectSpawner.SpawnRandomObjects(positions, out positions);
             objectSpawner.SpawnRandomGrass(positions, out positions);
         }
+
         return true;
     }
 }

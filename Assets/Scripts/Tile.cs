@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tile {
@@ -23,7 +22,8 @@ public class Tile {
             if (0 < neighbor.Value.validScripts.Count) {
                 neighbor.Value.validScripts.IntersectWith(scripts);
             } else {
-                neighbor.Value.validScripts.AddRange(scripts);
+                foreach (var script_ in scripts)
+                    neighbor.Value.validScripts.Add(script_);
             }
         }
     }
