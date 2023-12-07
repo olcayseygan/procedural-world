@@ -33,11 +33,12 @@ public class MapGenerator : MonoBehaviour {
         var randomTile = gridOrdered[Random.Range(0, gridOrdered.Count)];
         var randomValidScript = randomTile.GetRandomValidScript();
         if (!grid.TryPlaceTile(randomTile, randomValidScript)) return false;
-        ObjectSpawner objectSpawner = randomValidScript.gameObject.GetComponent<ObjectSpawner>();
+        TileInitializer objectSpawner = randomValidScript.gameObject.GetComponent<TileInitializer>();
         if (objectSpawner != null) {
             objectSpawner.GetTerrainProperties();
-            objectSpawner.InitializePositions();
-            while (objectSpawner.SpawnRandomObject()) ;
+            var positions = objectSpawner.InitializePositions();
+            objectSpawner.SpawnRandomObjects(positions, out positions);
+            objectSpawner.SpawnRandomGrass(positions, out positions);
         }
         return true;
     }

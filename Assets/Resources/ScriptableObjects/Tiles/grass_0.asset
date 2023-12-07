@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0729b3669e456f647a820a34c19bfc19, type: 3}
   m_Name: grass_0
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2709291129617905675, guid: 35df32fa77d8a8b4fbd95d3de4fc9f43, type: 3}
+  prefab: {fileID: 417177367264783854, guid: 35df32fa77d8a8b4fbd95d3de4fc9f43, type: 3}
   gameObject: {fileID: 0}
-  rotations:
-  - types: 
+  rotations: []
   rotationY: 0
   identifierLength: 3
   identifiers:
