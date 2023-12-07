@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -39,6 +41,7 @@ public class TileInitializer : MonoBehaviour {
                 }
             }
         }
+
         return positions;
     }
 
@@ -67,22 +70,35 @@ public class TileInitializer : MonoBehaviour {
     public bool SpawnRandomObjects(List<Vector3> inPositions, out List<Vector3> outPositions) {
         outPositions = inPositions;
         if (biomeSO.objects.Count == 0) return false;
+        List<TreeInstance> treeInstances = new();
+        List<TreePrototype> treePrototypes = new();
+        foreach (var prefab in biomeSO.objects[Random.Range(0, biomeSO.objects.Count)].GetGameObjects())
+            treePrototypes.Add(new TreePrototype() { prefab = prefab });
+
+        terrainData.treePrototypes = treePrototypes.ToArray();
         for (int i = 0; i < totalObject; i++) {
-            Vector3 position = outPositions[Random.Range(0, outPositions.Count)];
-            GameObject gameObject_ = Instantiate(biomeSO.objects[Random.Range(0, biomeSO.objects.Count)].GetRandomGameObject(), position, Quaternion.identity);
-            gameObject_.transform.SetParent(transform, false);
-            gameObject_.transform.localPosition = position;
-            gameObject_.transform.localScale = Vector3.one * Random.Range(0.75f, 1.25f);
-            gameObject_.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            Vector3 position = outPositions[Random.Range(0, outPositions.Count)] / terrainData.size.x;
+            TreeInstance treeInstance = new() {
+                position = position,
+                heightScale = 1,
+                widthScale = 1,
+                color = Color.white,
+                lightmapColor = Color.white,
+                prototypeIndex = Random.Range(0, terrainData.treePrototypes.Length),
+            };
+            treeInstances.Add(treeInstance);
             outPositions.Remove(position);
         }
+
+        terrainData.SetTreeInstances(treeInstances.ToArray(), false);
+        terrainData.RefreshPrototypes();
         return true;
     }
 
     public bool SpawnRandomGrass(List<Vector3> inPositions, out List<Vector3> outPositions) {
         outPositions = inPositions;
         int[,] detailMap = new int[terrainData.detailWidth, terrainData.detailHeight];
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 100; i++) {
             Vector3 position = outPositions[Random.Range(0, outPositions.Count)];
             detailMap[(int)position.x, (int)position.z] = 204;
             outPositions.Remove(position);
