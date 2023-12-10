@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7e42a4a94e35a43b1828997947f48d, type: 3}
   m_Name: grass
   m_EditorClassIdentifier: 
-  objects:
+  trees:
   - {fileID: 11400000, guid: 6635c2bbe8cab2e44b524eb2ca0643d4, type: 2}
+  grasses: []
   terrainLayers:
   - {fileID: 8574412962073106934, guid: 45947192858184a4784a7eab561ccb94, type: 2}

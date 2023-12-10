@@ -49,7 +49,7 @@ public class TileSO : ScriptableObject {
 
     [SerializeField] private Rotation[] rotations;
     public float rotationY = 0f;
-    [SerializeField] private int identifierLength = 3;
+    [SerializeField] private int identifierLength = 2;
     [SerializeField] private Identifier[] identifiers = new Identifier[SIDES_NUM]; // since, there is four sides in 2D.
 
     public TileSO[] GenerateVariants() {

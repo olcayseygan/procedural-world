@@ -51,7 +51,6 @@ public class TileInitializer : MonoBehaviour {
         return vector3;
     }
 
-
     private int GetTextureIdxAtPosition(Vector3 position) {
         Vector3 vector3 = ConvertPositionToSplatMapCoordinate(position);
         int activeTerrainTextureIdx = 0;
@@ -68,14 +67,15 @@ public class TileInitializer : MonoBehaviour {
 
     public bool SpawnRandomObjects(List<Vector3> inPositions, out List<Vector3> outPositions) {
         outPositions = inPositions;
-        if (biomeSO.objects.Count == 0) return false;
+        if (outPositions.Count == 0) return false;
+        if (biomeSO.trees.Count == 0) return false;
         List<TreeInstance> treeInstances = new();
         List<TreePrototype> treePrototypes = new();
-        foreach (var prefab in biomeSO.objects[Random.Range(0, biomeSO.objects.Count)].GetGameObjects())
+        foreach (var prefab in biomeSO.trees[Random.Range(0, biomeSO.trees.Count)].GetTreePrefabs())
             treePrototypes.Add(new TreePrototype() { prefab = prefab });
 
         terrainData.treePrototypes = treePrototypes.ToArray();
-        for (int i = 0; i < totalObject; i++) {
+        for (int i = 0; i < totalObject && 0 < outPositions.Count; i++) {
             Vector3 position = outPositions[Random.Range(0, outPositions.Count)] / terrainData.size.x;
             TreeInstance treeInstance = new() {
                 position = position,
@@ -97,8 +97,9 @@ public class TileInitializer : MonoBehaviour {
 
     public bool SpawnRandomGrass(List<Vector3> inPositions, out List<Vector3> outPositions) {
         outPositions = inPositions;
+        if (outPositions.Count == 0) return false;
         int[,] detailMap = new int[terrainData.detailWidth, terrainData.detailHeight];
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200 && 0 < outPositions.Count; i++) {
             Vector3 position = outPositions[Random.Range(0, outPositions.Count)];
             detailMap[(int)position.x, (int)position.z] = 204;
             outPositions.Remove(position);
@@ -106,5 +107,20 @@ public class TileInitializer : MonoBehaviour {
 
         terrainData.SetDetailLayer(0, 0, 0, detailMap);
         return true;
+    }
+
+    public void RotateHeights(float angle) {
+        float[,] heights = terrainData.GetHeights(0, 0, terrainData.heightmapResolution, terrainData.heightmapResolution);
+        int width = heights.GetLength(0);
+        int height = heights.GetLength(1);
+        float[,] rotatedArray = new float[height, width];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                rotatedArray[height - 1 - j, i] = heights[i, j];
+            }
+        }
+
+        terrainData.SetHeights(0, 0, rotatedArray);
     }
 }

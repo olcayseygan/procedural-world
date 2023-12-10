@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90967b9de21b2644385a2f903c6555a1, type: 3}
   m_Name: grid
   m_EditorClassIdentifier: 
-  size: 21
+  size: 11
   gap: 20
   title: Tiles
   beginningTileSO: {fileID: 11400000, guid: abcf314d913369a4ea1fd2dff1cc33ac, type: 2}

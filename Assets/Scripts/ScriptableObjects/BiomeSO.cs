@@ -5,7 +5,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Biome")]
 public class BiomeSO : ScriptableObject {
-    public List<BiomeObjectSO> objects = new();
+    public List<BiomeTreeSO> trees = new();
     public List<BiomeGrassSO> grasses = new();
     public List<TerrainLayer> terrainLayers = new();
 }

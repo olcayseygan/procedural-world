@@ -17,21 +17,17 @@ MonoBehaviour:
   rotations:
   - types: 
   rotationY: 0
-  identifierLength: 3
+  identifierLength: 2
   identifiers:
   - identifiers:
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
   - identifiers:
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
   - identifiers:
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
   - identifiers:
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
-    - {fileID: 11400000, guid: 21565fd0a303a7945afd7a726b8191b7, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
+    - {fileID: 11400000, guid: f97cc2cdc71de134f9f1f1e561286436, type: 2}
